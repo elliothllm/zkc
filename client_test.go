@@ -6,14 +6,9 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	clientCfg := &ClientConfig{
-		Url:     "http://localhost:8123",
-		Timeout: 20 * time.Second,
-	}
+	erigonClient := CDKErigonClient("", WithTimeout(20*time.Second), WithMaxRetries(3, 5*time.Second))
 
-	erigonClient := NewClient(clientCfg).CDKErigon()
-
-	res, err := erigonClient.GetExitRootTable()
+	res, err := erigonClient.GetBatchByNumber(10, true)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}

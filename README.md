@@ -20,33 +20,35 @@ Then, import the package in your project:
 import "github.com/elliothllm/zkc"
 ```
 
-***
-
 ## Usage
 
-Configure the client by creating a new config instance with your desired configuration:
+Initialise the cdk-erigon client: _Currently only supports CDK Erigon_
 
 ```go
-clientCfg := &zkc.ClientConfig{
-    Url:     "http://localhost:8123",
-    Timeout: 20 * time.Second,
+client := zkc.CDKErigonClient("localhost:8545")
+```
+
+You can configure the client with various options:
+
+```go
+client := zkc.CDKErigonClient("localhost:8545", zkc.WithTimeout(20*time.Second), zkc.WithMaxRetries(3, 5*time.Second))
+```
+
+Call an endpoint:
+
+```go
+batch, err := client.GetBatchByNumber(10, false)
+if err != nil {
+    return err
 }
 ```
-
-Initialise the client and call the desired client: _Currently only supports CDK Erigon_
-
-```go
-erigonClient := zkc.NewClient(clientCfg).CDKErigon()
-```
-
-***
 
 ## Current Endpoints
 
 - [x] zkevm_getForkId
 - [x] zkevm_getExitRootTable
-
-***
+- [x] zkevm_BatchNumber
+- [x] zkevm_getBatchByNumber
 
 ## Example Usage
 
@@ -56,30 +58,17 @@ package main
 import (
     "github.com/elliothllm/zkc"
     "time"
-    "log"
-    "fmt"
 )
 
 func main() {
-	clientCfg := &zkc.ClientConfig{
-		Url:     "http://localhost:8123",
-		Timeout: 20 * time.Second,
-	}
+	erigonClient := zkc.CDKErigonClient("", zkc.WithTimeout(20*time.Second), zkc.WithMaxRetries(3, 5*time.Second))
 
-	erigonClient := zkc.NewClient(clientCfg).CDKErigon()
-
-	res, err := erigonClient.GetForkId()
+	res, err := erigonClient.GetBatchByNumber(10, true)
 	if err != nil {
-		log.Fatalf("Error getting ForkId: %v", err)
+		return err
 	}
-
-	forkId := res.Uint64()
-	
-	fmt.Printf("ForkId: %d\n", forkId)
 }
 ```
-
-***
 
 ## License
 
@@ -87,4 +76,4 @@ ZKC is released under the MIT License. See the [LICENSE](LICENSE) file for more 
 
 ***
 
-_This project is a work in progress. I appreciate your patience as ZCK gets developed._
+_This project is a work in progress. I appreciate your patience as ZKC gets developed._
