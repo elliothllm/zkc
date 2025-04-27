@@ -2,13 +2,12 @@ package zkc
 
 import (
 	"testing"
-	"time"
 )
 
 func TestClient(t *testing.T) {
-	erigonClient := CDKErigonClient("", WithTimeout(20*time.Second), WithMaxRetries(3, 5*time.Second))
+	erigonClient := CDKErigonClient("http://localhost:8123")
 
-	res, err := erigonClient.GetBatchByNumber(10, true)
+	res, err := erigonClient.GetForkByID("0x9")
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}

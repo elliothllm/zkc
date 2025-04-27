@@ -45,10 +45,34 @@ if err != nil {
 
 ## Current Endpoints
 
-- [x] zkevm_getForkId
-- [x] zkevm_getExitRootTable
 - [x] zkevm_BatchNumber
+- [x] zkevm_batchNumberByBlockNumber
+- [x] zkevm_consolidatedBlockNumber
+- [x] zkevm_estimateCounters 
 - [x] zkevm_getBatchByNumber
+- [x] zkevm_getBatchCountersByNumber 
+- [x] zkevm_getBatchWitness 
+- [x] zkevm_getBlockRangeWitness 
+- [x] zkevm_getExitRootTable 
+- [x] zkevm_getExitRootsByGER 
+- [x] zkevm_getForkById 
+- [x] zkevm_getForkId 
+- [ ] zkevm_getForkIdByBatchNumber 
+- [ ] zkevm_getForks 
+- [ ] zkevm_getFullBlockByHash 
+- [ ] zkevm_getFullBlockByNumber 
+- [ ] zkevm_getL2BlockInfoTree 
+- [x] zkevm_getLatestDataStreamBlock 
+- [ ] zkevm_getLatestGlobalExitRoot 
+- [ ] zkevm_getProverInput 
+- [ ] zkevm_getRollupAddress 
+- [ ] zkevm_getRollupManagerAddress 
+- [ ] zkevm_getVersionHistory 
+- [ ] zkevm_getWitness 
+- [ ] zkevm_isBlockConsolidated 
+- [ ] zkevm_isBlockVirtualized 
+- [x] zkevm_verifiedBatchNumber 
+- [ ] zkevm_virtualBatchNumber
 
 ## Example Usage
 

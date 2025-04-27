@@ -49,6 +49,8 @@ func newClient(config *clientConfig) *Client {
 	}
 }
 
+// CDKErigonClient creates a new instance of CdkErigonApi.
+// It takes a URL and optional client options as parameters.
 func CDKErigonClient(url string, options ...ClientOption) CdkErigonApi {
 	cfg := new(clientConfig)
 	for _, opt := range options {
@@ -61,7 +63,7 @@ func CDKErigonClient(url string, options ...ClientOption) CdkErigonApi {
 	}
 }
 
-func (c *Client) handleRequest(r *request) (*response, error) {
+func (c *Client) handleRequest(r *Request) (*Response, error) {
 	var err error
 
 	payload, err := json.Marshal(r)
@@ -92,15 +94,42 @@ func (c *Client) handleRequest(r *request) (*response, error) {
 			}
 			return nil, err
 		}
-		defer resp.Body.Close()
 
-		var res response
+		var res Response
 		if err = json.NewDecoder(resp.Body).Decode(&res); err != nil {
+			resp.Body.Close()
 			return nil, err
 		}
+
+		if res.Error != nil {
+			resp.Body.Close()
+			lastErr = res.Error
+			if attempt < attempts-1 {
+				time.Sleep(c.config.RetryDelay)
+				continue
+			}
+			return nil, res.Error
+		}
+
+		resp.Body.Close()
 
 		return &res, nil
 	}
 
 	return nil, lastErr
+}
+
+// SendRpcRequest sends a JSON-RPC request to the specified URL and returns the response.
+// It takes a URL and a Request object as parameters and returns a Response object or an error.
+func SendRpcRequest(url string, request *Request) (*Response, error) {
+	cfg := new(clientConfig)
+	cfg.Url = url
+	c := newClient(cfg)
+
+	res, err := c.handleRequest(request)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
 }
