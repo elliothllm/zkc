@@ -13,6 +13,11 @@ type CdkErigonApi interface {
 	GetExitRootsByGER(ger string) (*ExitRoots, error)
 	GetForkByID(forkId string) (*ForkID, error)
 	GetForkId() (*HexString, error)
+	GetForkIdByBatchNumber(batchNumber RpcBlockOrBatchNumber) (*HexString, error)
+	GetForks() ([]ForkID, error)
+	GetFullBlockByHash(blockHash string, fullTx bool) (*Block, error)
+	GetFullBlockByNumber(blockNumber RpcBlockOrBatchNumber, fullTx bool) (*Block, error)
+	GetL2BlockInfoTree(blockNum RpcBlockOrBatchNumber) (*L2BlockInfoTree, error)
 	GetLatestDataStreamBlock() (string, error)
 	VerifiedBatchNumber() (string, error)
 }

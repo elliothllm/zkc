@@ -5,9 +5,9 @@ import (
 )
 
 func TestClient(t *testing.T) {
-	erigonClient := CDKErigonClient("http://localhost:8123")
+	erigonClient := CDKErigonClient("http://localhost:8124")
 
-	res, err := erigonClient.GetForkByID("0x9")
+	res, err := erigonClient.GetL2BlockInfoTree(1)
 	if err != nil {
 		t.Errorf("Error: %s", err)
 	}

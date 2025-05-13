@@ -269,6 +269,121 @@ func (api *cdkErigonApiImpl) GetForkId() (*HexString, error) {
 	return &result, nil
 }
 
+// GetForkIdByBatchNumber calls method zkevm_getForkIdByBatchNumber.
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the batch number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+func (api *cdkErigonApiImpl) GetForkIdByBatchNumber(batchNumber RpcBlockOrBatchNumber) (*HexString, error) {
+	params := batchNumber.Params()
+
+	req, err := newRequest(MethodZkevmGetForkIdByBatchNumber, params)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[HexString](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+// GetForks calls method zkevm_getForks.
+// It returns a slice of ForkID structs.
+func (api *cdkErigonApiImpl) GetForks() ([]ForkID, error) {
+	req := newRequestNoParams(MethodZkevmGetForks)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[[]ForkID](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+// GetFullBlockByHash calls method zkevm_getFullBlockByHash.
+// It takes a block hash of type string. e.g., "0x1234...".
+// FullTx bool indicates whether to return the full transaction details or not.
+func (api *cdkErigonApiImpl) GetFullBlockByHash(blockHash string, fullTx bool) (*Block, error) {
+	params := []interface{}{blockHash, fullTx}
+
+	req, err := newRequest(MethodZkevmGetFullBlockByHash, params)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[Block](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+// GetFullBlockByNumber calls method zkevm_getFullBlockByNumber.
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the block number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+// FullTx bool indicates whether to return the full transaction details or not.
+func (api *cdkErigonApiImpl) GetFullBlockByNumber(blockNumber RpcBlockOrBatchNumber, fullTx bool) (*Block, error) {
+	params := blockNumber.Params(fullTx)
+
+	req, err := newRequest(MethodZkevmGetFullBlockByNumber, params)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[Block](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+// GetL2BlockInfoTree calls method zkevm_getL2BlockInfoTree.
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the block number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+func (api *cdkErigonApiImpl) GetL2BlockInfoTree(blockNum RpcBlockOrBatchNumber) (*L2BlockInfoTree, error) {
+	params := blockNum.Params()
+
+	req, err := newRequest(MethodZkevmGetL2BlockInfoTree, params)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[L2BlockInfoTree](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
 func (api *cdkErigonApiImpl) GetLatestDataStreamBlock() (string, error) {
 	req := newRequestNoParams(MethodZkevmGetLatestDataStreamBlock)
 

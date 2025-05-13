@@ -57,11 +57,11 @@ if err != nil {
 - [x] zkevm_getExitRootsByGER 
 - [x] zkevm_getForkById 
 - [x] zkevm_getForkId 
-- [ ] zkevm_getForkIdByBatchNumber 
-- [ ] zkevm_getForks 
-- [ ] zkevm_getFullBlockByHash 
-- [ ] zkevm_getFullBlockByNumber 
-- [ ] zkevm_getL2BlockInfoTree 
+- [x] zkevm_getForkIdByBatchNumber 
+- [x] zkevm_getForks 
+- [x] zkevm_getFullBlockByHash 
+- [x] zkevm_getFullBlockByNumber 
+- [x] zkevm_getL2BlockInfoTree 
 - [x] zkevm_getLatestDataStreamBlock 
 - [ ] zkevm_getLatestGlobalExitRoot 
 - [ ] zkevm_getProverInput 

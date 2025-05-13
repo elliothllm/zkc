@@ -81,8 +81,8 @@ type Block struct {
 	Hash             string     `json:"hash"`
 	Transactions     []TxOrHash `json:"transactions"`
 	Uncles           []string   `json:"uncles"`
-	BlockInfoRoot    string     `json:"blockInfoRoot"`
-	GlobalExitRoot   string     `json:"globalExitRoot"`
+	BlockInfoRoot    string     `json:"blockInfoRoot,omitempty"`
+	GlobalExitRoot   string     `json:"globalExitRoot,omitempty"`
 }
 
 type TxOrHash struct {
@@ -216,4 +216,33 @@ type ForkID struct {
 	ToBatchNumber   HexString `json:"toBatchNumber"`
 	Version         string    `json:"version"`
 	BlockNumber     HexString `json:"blockNumber"`
+}
+
+type TxInfo struct {
+	ChainID             uint64   `json:"chainId"`
+	Value               uint64   `json:"value"`
+	GasPrice            uint64   `json:"gasPrice"`
+	Nonce               uint64   `json:"nonce"`
+	TxGasLimit          uint64   `json:"txGasLimit"`
+	To                  string   `json:"to"`
+	From                string   `json:"from"`
+	Data                []byte   `json:"data"`
+	L2TxHash            string   `json:"l2TxHash"`
+	TxIndex             uint64   `json:"txIndex"`
+	Receipt             *Receipt `json:"receipt,omitempty"`
+	LogIndex            uint64   `json:"logIndex"`
+	CumulativeGasUsed   uint64   `json:"cumulativeGasUsed"`
+	EffectivePercentage uint64   `json:"effectivePercentage"`
+}
+
+type L2BlockInfoTree struct {
+	Coinbase          string   `json:"coinbase"`
+	BlockNumber       uint64   `json:"blockNumber"`
+	BlockTime         uint64   `json:"blockTime"`
+	BlockGasLimit     uint64   `json:"blockGasLimit"`
+	BlockGasUsed      uint64   `json:"blockGasUsed"`
+	GER               string   `json:"ger,omitempty"`
+	L1BlockHash       string   `json:"l1BlockHash,omitempty"`
+	PreviousStateRoot string   `json:"previousStateRoot"`
+	TxInfos           []TxInfo `json:"txInfos"`
 }
