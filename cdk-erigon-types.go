@@ -3,6 +3,7 @@ package zkc
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 type ExitRoot struct {
@@ -246,3 +247,20 @@ type L2BlockInfoTree struct {
 	PreviousStateRoot string   `json:"previousStateRoot"`
 	TxInfos           []TxInfo `json:"txInfos"`
 }
+
+// ProverInput is the payload returned by zkevm_getProverInput.
+// Witness is a hex-encoded SMT partial tree.
+// Coinbase is the sequencer address.
+// OldAccInputHash is the previous batch's accumulated input hash (zero for the first batch).
+// TimestampLimit is used by injected/first batches; if 0, the node replaces it with now + 10 min.
+// ForcedBlockhashL1 is set on forced batches and zero for regular batches.
+type ProverInput struct {
+	Witness           string `json:"witness"`
+	Coinbase          string `json:"coinbase"`
+	OldAccInputHash   string `json:"oldAccInputHash"`
+	TimestampLimit    uint64 `json:"timestampLimit"`
+	ForcedBlockhashL1 string `json:"forcedBlockhashL1"`
+}
+
+// VersionHistory maps a version string to the time it was first observed by the node.
+type VersionHistory map[string]time.Time

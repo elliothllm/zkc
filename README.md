@@ -63,16 +63,16 @@ if err != nil {
 - [x] zkevm_getFullBlockByNumber 
 - [x] zkevm_getL2BlockInfoTree 
 - [x] zkevm_getLatestDataStreamBlock 
-- [ ] zkevm_getLatestGlobalExitRoot 
-- [ ] zkevm_getProverInput 
-- [ ] zkevm_getRollupAddress 
-- [ ] zkevm_getRollupManagerAddress 
-- [ ] zkevm_getVersionHistory 
-- [ ] zkevm_getWitness 
-- [ ] zkevm_isBlockConsolidated 
-- [ ] zkevm_isBlockVirtualized 
+- [x] zkevm_getLatestGlobalExitRoot 
+- [x] zkevm_getProverInput 
+- [x] zkevm_getRollupAddress 
+- [x] zkevm_getRollupManagerAddress 
+- [x] zkevm_getVersionHistory 
+- [x] zkevm_getWitness 
+- [x] zkevm_isBlockConsolidated 
+- [x] zkevm_isBlockVirtualized 
 - [x] zkevm_verifiedBatchNumber 
-- [ ] zkevm_virtualBatchNumber
+- [x] zkevm_virtualBatchNumber
 
 ## Example Usage
 
