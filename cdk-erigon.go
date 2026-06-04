@@ -400,8 +400,202 @@ func (api *cdkErigonApiImpl) GetLatestDataStreamBlock() (string, error) {
 	return result, nil
 }
 
+// GetLatestGlobalExitRoot calls method zkevm_getLatestGlobalExitRoot.
+// It returns the latest used global exit root as a hexadecimal hash string.
+func (api *cdkErigonApiImpl) GetLatestGlobalExitRoot() (string, error) {
+	req := newRequestNoParams(MethodZkevmGetLatestGlobalExitRoot)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := getResult[string](resp)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+// GetProverInput calls method zkevm_getProverInput.
+// It returns the prover input payload for a given batch number.
+// You may specify the WitnessMode which is a string type with values "full" or "trimmed".
+// The debug parameter is a boolean value indicating whether to include debug information on the node.
+// Note: this method is only supported on a sequencer node.
+func (api *cdkErigonApiImpl) GetProverInput(batchNumber uint64, mode *WitnessMode, debug bool) (*ProverInput, error) {
+	params := []interface{}{batchNumber, mode, debug}
+
+	req, err := newRequest(MethodZkevmGetProverInput, params)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[ProverInput](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &result, nil
+}
+
+// GetRollupAddress calls method zkevm_getRollupAddress.
+// It returns the configured rollup (zkEVM) contract address as a hexadecimal string.
+func (api *cdkErigonApiImpl) GetRollupAddress() (string, error) {
+	req := newRequestNoParams(MethodZkevmGetRollupAddress)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := getResult[string](resp)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+// GetRollupManagerAddress calls method zkevm_getRollupManagerAddress.
+// It returns the configured rollup manager contract address as a hexadecimal string.
+func (api *cdkErigonApiImpl) GetRollupManagerAddress() (string, error) {
+	req := newRequestNoParams(MethodZkevmGetRollupManagerAddress)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := getResult[string](resp)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+// GetVersionHistory calls method zkevm_getVersionHistory.
+// It returns the node's version history as a map of version string to the time it was first seen.
+func (api *cdkErigonApiImpl) GetVersionHistory() (VersionHistory, error) {
+	req := newRequestNoParams(MethodZkevmGetVersionHistory)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	result, err := getResult[VersionHistory](resp)
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+// GetWitness calls method zkevm_getWitness.
+// It returns the witness for a single block.
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the block number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+// You may specify the WitnessMode which is a string type with values "full" or "trimmed".
+// The debug parameter is a boolean value indicating whether to include debug information on the node.
+func (api *cdkErigonApiImpl) GetWitness(blockNumber RpcBlockOrBatchNumber, mode *WitnessMode, debug bool) (string, error) {
+	params := blockNumber.Params(mode, debug)
+
+	req, err := newRequest(MethodZkevmGetWitness, params)
+	if err != nil {
+		return "", err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := getResult[string](resp)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+// IsBlockConsolidated calls method zkevm_isBlockConsolidated.
+// It returns true if the block has been consolidated (its batch has been verified on L1).
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the block number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+func (api *cdkErigonApiImpl) IsBlockConsolidated(blockNumber RpcBlockOrBatchNumber) (bool, error) {
+	params := blockNumber.Params()
+
+	req, err := newRequest(MethodZkevmIsBlockConsolidated, params)
+	if err != nil {
+		return false, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return false, err
+	}
+
+	result, err := getResult[bool](resp)
+	if err != nil {
+		return false, err
+	}
+
+	return result, nil
+}
+
+// IsBlockVirtualized calls method zkevm_isBlockVirtualized.
+// It returns true if the block has been virtualized (its batch has been sequenced on L1 but not yet verified).
+// It takes RpcBlockOrBatchNumber of type int64 where you can set the block number to negative values to represent string values.
+// -1 is "latest", -2 is "pending", -3 is "safe", -4 is "finalized", -5 is "latestExecuted".
+func (api *cdkErigonApiImpl) IsBlockVirtualized(blockNumber RpcBlockOrBatchNumber) (bool, error) {
+	params := blockNumber.Params()
+
+	req, err := newRequest(MethodZkevmIsBlockVirtualized, params)
+	if err != nil {
+		return false, err
+	}
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return false, err
+	}
+
+	result, err := getResult[bool](resp)
+	if err != nil {
+		return false, err
+	}
+
+	return result, nil
+}
+
 func (api *cdkErigonApiImpl) VerifiedBatchNumber() (string, error) {
 	req := newRequestNoParams(MethodZkevmVerifiedBatchNumber)
+
+	resp, err := api.client.handleRequest(req)
+	if err != nil {
+		return "", err
+	}
+
+	result, err := getResult[string](resp)
+	if err != nil {
+		return "", err
+	}
+
+	return result, nil
+}
+
+// VirtualBatchNumber calls method zkevm_virtualBatchNumber.
+// It returns the latest virtual batch number in hexadecimal.
+// A virtual batch is a batch that has been sequenced on L1 but has not yet been verified.
+func (api *cdkErigonApiImpl) VirtualBatchNumber() (string, error) {
+	req := newRequestNoParams(MethodZkevmVirtualBatchNumber)
 
 	resp, err := api.client.handleRequest(req)
 	if err != nil {
